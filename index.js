@@ -1,7 +1,15 @@
 const fs  = require('fs');
-const http  = require('http')
+const http  = require('http');
+const { stringify } = require('querystring');
 const url  = require('url')
-
+const readFile = async (path, format)=>{
+try {
+  const data  =  await fs.promises.readFile(`${__dirname}/dev-data/data.json`,'utf-8')
+  return JSON.parse(data)
+} catch (error) {
+  
+}
+}
 //SERVER
 const server = http.createServer((req,res)=>{
     console.log(req.url);
@@ -10,6 +18,14 @@ const server = http.createServer((req,res)=>{
         res.end('welcome home!')
     }else if (pathname==='/'){
         res.end('welcome to your first node server')
+    }else if (pathname==='/api'){
+      res.writeHead(200,{
+        'Content-type':'application/json'
+      })
+      readFile().then(data=> res.end(JSON.stringify(data)))
+     
+      console.log(readFile());
+    
     }else{
         res.writeHead(404,{
             'Content-type':'text/html',
