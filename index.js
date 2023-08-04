@@ -14,18 +14,23 @@ try {
 const tempOverview  = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
 const tempCard  = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
 const tempProduct  = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
+let data = ''
+readFile().then(data=>{
+  console.log(data);
+})
 const server = http.createServer((req,res)=>{
     console.log(req.url);
     const pathname = req.url
 
-
+    
     
     if(pathname==='/home'){
-        res.end('welcome home!')
-        // overview page
+      
+      res.end('welcome home!')
+      // overview page
     }else if (pathname==='/'){
       res.writeHead(200,{'Content-type':'text/html'})
-      res.end(tempOverview)
+      res.end(tempOverview.replaceAll('{%PRODUCT_CARDS%}','shit'))
       
         //product page
     }else if (pathname==='/product'){
