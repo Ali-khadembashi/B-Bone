@@ -29,8 +29,17 @@ const server = http.createServer((req,res)=>{
       res.end('welcome home!')
       // overview page
     }else if (pathname==='/'){
-      res.writeHead(200,{'Content-type':'text/html'})
-      res.end(tempOverview.replaceAll('{%PRODUCT_CARDS%}','shit'))
+      readFile().then(data=>{
+        console.log(data);
+       const cardsHtml =  data.map(item=>{
+        return(
+          tempCard.replaceAll('{%PRODUCTNAME%}',item.productName).replaceAll('{%ID%}',item.id).replaceAll('{%QUANTITY%}',item.quantity).replaceAll('{%IMAGE%}',item.image)
+        )
+       })
+       res.writeHead(200,{'Content-type':'text/html'})
+       res.end(tempOverview.replaceAll('{%PRODUCT_CARDS%}',cardsHtml))
+      })
+     
       
         //product page
     }else if (pathname==='/product'){
